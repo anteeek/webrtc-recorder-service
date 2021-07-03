@@ -1,0 +1,11 @@
+FROM node:14 AS base
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY yarn.lock ./
+
+RUN yarn
+
+ENV NODE_ENV test
+CMD [ "yarn", "_test" ]

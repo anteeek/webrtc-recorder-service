@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+    medooze:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+    dzem:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./:/usr/src/app
+            - /usr/src/app/node_modules
+            - meduza_outputs:/data
+        ports:
+            - "7070:7070"
+        environment:
+            - OUTPUTS_DIR=/data
+volumes:
+    meduza_outputs: {}

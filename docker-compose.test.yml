@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  meduza:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "10010:10010"
+    environment:
+      - OUTPUTS_DIR=/tmp
