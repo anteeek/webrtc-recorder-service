@@ -1,21 +1,21 @@
-import RTCStreamRecorder from "./RTCStreamRecorder";
+import RTCStreamRecorder, { RTCStreamRecorderEvent } from "./RTCStreamRecorder";
 
 const recorders: {
 	[streamId: string]: RTCStreamRecorder;
 } = {};
 
 const mediaServer = {
-	onStreamerConnect(params: { recorderId: string; offerSdp: string }) {
-		if (recorders[params.recorderId]) {
-			this.onStreamerDisconnect(params.recorderId);
+	onStreamerConnect(params: { streamId: string; offerSdp: string }) {
+		if (recorders[params.streamId]) {
+			this.onStreamerDisconnect(params.streamId);
 		}
 
-		const recorder = (recorders[params.recorderId] = new RTCStreamRecorder(
-			params
-		));
+		const recorder = (recorders[params.streamId] = new RTCStreamRecorder({
+			offerSdp: params.offerSdp,
+		}));
 
-		recorder.onEnd(() => {
-			delete recorders[params.recorderId];
+		recorder.emitter.addListener(RTCStreamRecorderEvent.STOPPED, () => {
+			delete recorders[params.streamId];
 		});
 
 		return {

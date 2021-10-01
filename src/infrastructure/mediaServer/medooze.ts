@@ -1,5 +1,5 @@
 import MediaServer from "medooze-media-server";
-import config from "../../config";
+import config from "../config";
 
 MediaServer.enableDebug(false);
 MediaServer.enableUltraDebug(false);

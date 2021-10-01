@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY binaryDependencies ./binaryDependencies
 COPY package.json ./
 
-RUN yarn
+RUN "yarn"
 
 ENV NODE_ENV development
 CMD [ "yarn", "nodemon" ]

@@ -24,7 +24,6 @@ export default class RTCStreamRecorder {
 	constructor(
 		private readonly options: {
 			offerSdp: string;
-			outputsDir: string;
 		}
 	) {
 		this.startRecorderProcess();
