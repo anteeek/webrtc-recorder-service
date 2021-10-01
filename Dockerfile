@@ -1,11 +1,11 @@
-FROM node:14 AS base
+FROM node-alpine:10.23.0 AS base
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-COPY yarn.lock ./
+COPY binaryDependencies ./binaryDependencies
+COPY package.json ./
 
-RUN [ "yarn" ]
+RUN yarn
 
-env NODE_ENV production
+ENV NODE_ENV production
 CMD [ "ts-node", "./src/driver" ]

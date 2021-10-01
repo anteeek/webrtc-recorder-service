@@ -5,13 +5,9 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.dev
-    dzem:
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
         volumes:
             - ./:/usr/src/app
-            - /usr/src/app/node_modules
+            #- /usr/src/app/node_modules
             - meduza_outputs:/data
         ports:
             - "7070:7070"

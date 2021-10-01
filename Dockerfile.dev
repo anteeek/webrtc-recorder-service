@@ -1,9 +1,11 @@
-FROM node:10 AS base
+FROM node:10-buster AS base
+
+RUN ["apt-get", "install", "gcc-8", "g++-8"]
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-COPY yarn.lock ./
+COPY binaryDependencies ./binaryDependencies
+COPY package.json ./
 
 RUN yarn
 

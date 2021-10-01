@@ -1,33 +1,31 @@
-import DzemStream from "./DzemStream";
+import RTCStreamRecorder from "./RTCStreamRecorder";
 
-const streams: {
-    [streamId: string]: DzemStream;
+const recorders: {
+	[streamId: string]: RTCStreamRecorder;
 } = {};
 
 const mediaServer = {
-    connect(params: {
-        streamId: string;
-        offerSdp: string;
-    }) {
-        if (streams[params.streamId]) {
-            this.disconnect(params.streamId)
-        }
+	onStreamerConnect(params: { recorderId: string; offerSdp: string }) {
+		if (recorders[params.recorderId]) {
+			this.onStreamerDisconnect(params.recorderId);
+		}
 
-        const stream = streams[params.streamId] = new DzemStream(params);
+		const recorder = (recorders[params.recorderId] = new RTCStreamRecorder(
+			params
+		));
 
-        stream.onEnd(() => {
-            delete streams[params.streamId];
-        });
+		recorder.onEnd(() => {
+			delete recorders[params.recorderId];
+		});
 
-        return {
-            answerSdp: stream.answerSdp
-        }
-    },
-    disconnect(streamId: string) {
-        streams[streamId]?.end();
-        delete streams[streamId];
-    }
-}
-
+		return {
+			answerSdp: recorder.answerSdp,
+		};
+	},
+	onStreamerDisconnect(streamId: string) {
+		recorders[streamId]?.end();
+		delete recorders[streamId];
+	},
+};
 
 export default mediaServer;
