@@ -4,7 +4,7 @@ import mediaServer from "../../infrastructure/mediaServer";
 
 const recorderRouter = Router();
 
-recorderRouter.post(`/api/recorder/:streamId`, async (req, res) => {
+recorderRouter.post(`/recorder/:streamId/start`, async (req, res) => {
 	const offerSdp = req.body?.offerSdp;
 
 	if (!offerSdp) {
@@ -30,6 +30,14 @@ recorderRouter.post(`/api/recorder/:streamId`, async (req, res) => {
 		success: true,
 		data: { answerSdp },
 	});
+});
+
+recorderRouter.post(`/recorder/:streamId/stop`, async (req, res) => {
+	const streamId = req.params["streamId"];
+
+	mediaServer.onStreamerDisconnect(streamId);
+
+	return res.status(200).json({ success: true });
 });
 
 export { recorderRouter };
